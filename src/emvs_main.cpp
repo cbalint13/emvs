@@ -124,18 +124,17 @@ int main( int argc, char **argv )
             char str[1024];
 
             sprintf(str, "/visualize/%08lu.jpg", idx1);
-            cameras[idx1].m_image = imread( PMVSDir + "/" + str, CV_LOAD_IMAGE_GRAYSCALE );
+            cameras[idx1].m_image = imread( PMVSDir + "/" + str );
             Mat img = cameras[idx1].m_image;
 
             CV_Assert( img.data );
 
             // set missing width and height instrinsic
             cameras[idx1].SetIntrinsic( cameras[idx1].GetK()(0,0), img.cols, img.rows );
-
             flip( img, img, 0 );
 
-            //cameras[idx1].m_daisy = DAISY::create( 8, 2, 4, 4, DAISY::NRM_FULL, noArray(), true, false );
-            cameras[idx1].m_daisy = DAISY::create( 15, 3, 8, 8, DAISY::NRM_FULL, noArray(), true, false );
+            cameras[idx1].m_daisy = DAISY::create( 8, 2, 4, 4, DAISY::NRM_FULL, noArray(), true, false );
+            //cameras[idx1].m_daisy = DAISY::create( 15, 3, 8, 8, DAISY::NRM_FULL, noArray(), true, false );
             cameras[idx1].m_daisy->compute( img, cameras[idx1].descriptors );
 
             cameras[idx1].m_daisy_init = true;
@@ -156,7 +155,7 @@ int main( int argc, char **argv )
             if ( cameras[idx2].m_daisy_init == false )
             {
                 sprintf(str, "/visualize/%08d.jpg", idx2);
-                cameras[idx2].m_image = imread( PMVSDir + "/" + str, CV_LOAD_IMAGE_GRAYSCALE );
+                cameras[idx2].m_image = imread( PMVSDir + "/" + str );
                 Mat img = cameras[idx2].m_image;
 
                 CV_Assert( img.data );
@@ -165,8 +164,8 @@ int main( int argc, char **argv )
 
                 flip( img, img, 0 );
 
-                //cameras[idx2].m_daisy = DAISY::create( 8, 2, 4, 4, DAISY::NRM_FULL, noArray(), true, false );
-                cameras[idx2].m_daisy = DAISY::create( 15, 3, 8, 8, DAISY::NRM_FULL, noArray(), true, false );
+                cameras[idx2].m_daisy = DAISY::create( 8, 2, 4, 4, DAISY::NRM_FULL, noArray(), true, false );
+                //cameras[idx2].m_daisy = DAISY::create( 15, 3, 8, 8, DAISY::NRM_FULL, noArray(), true, false );
                 cameras[idx2].m_daisy->compute( img, cameras[idx2].descriptors );
 
                 cameras[idx2].m_daisy_init = true;

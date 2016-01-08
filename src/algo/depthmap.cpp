@@ -112,7 +112,7 @@ void DoStereoPair( Camera &camera1, Camera &camera2, vector<PointRGB_hit_type>& 
     Matx33f R0t_Z_invK0 = camera1.GetR().t()*Z*camera1.GetInvK();
 
 
-//    vector<uchar> visited( camera2.m_image.rows * camera2.m_image.cols, 0 );
+    vector<uchar> visited( camera2.m_image.rows * camera2.m_image.cols, 0 );
 
     CV_Assert( camera1.descriptors.cols == camera2.descriptors.cols );
 
@@ -181,8 +181,8 @@ void DoStereoPair( Camera &camera1, Camera &camera2, vector<PointRGB_hit_type>& 
                (yv >= camera2.m_image.rows - border)
              ) continue;
 
-//          if ( visited[yv*camera2.m_image.cols + xv] )
-//               continue;
+          if ( visited[yv*camera2.m_image.cols + xv] )
+               continue;
 
           desc2 = camera2.descriptors.ptr<float>( yv*camera2.m_image.cols + xv) ;
           float dist = FastSumSquaredDifference( desc1, desc2, camera1.descriptors.cols );
@@ -357,7 +357,7 @@ void DoStereoPair( Camera &camera1, Camera &camera2, vector<PointRGB_hit_type>& 
                camera1.m_index_to_point_cloud[idx1] = point_cloud_hit.size() - 1;
                camera2.m_index_to_point_cloud[idx2] = point_cloud_hit.size() - 1;
 
-//               visited[ epi[best_i].y*camera2.m_image.cols + epi[best_i].x ] = 1;
+               visited[ epi[best_i].y*camera2.m_image.cols + epi[best_i].x ] = 1;
              }
           }
           else
