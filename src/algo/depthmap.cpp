@@ -175,7 +175,7 @@ void DoStereoPair( Camera &camera1, Camera &camera2, vector<PointRGB_hit_type>& 
         // numerical bounds: protect epipolar samples
         if ( epi.empty() ) continue;
         // numerical bounds: too few samples ?
-        if ( epi.size() < 18 ) continue;
+        if ( epi.size() < 8 ) continue;
 
         // precomputed descriptor at integer location
         desc1 = camera1.descriptors.ptr<float>( y*camera2.m_image.cols + x );
