@@ -1,0 +1,255 @@
+PMVSDir: kermit/pmvs/OutPLYFilename: kermit.ply
+[0m0: [0;32m1 [0;31m2 [0;31m3 [0;31m4 [0;32m5 [0;31m6 [0;32m7 [0;31m8 [0;31m9 [0;32m10[0m
+[0m1: [0;32m0 [0;32m2 [0;31m3 [0;31m4 [0;31m5 [0;31m6 [0;32m7 [0;31m8 [0;32m9 [0;32m10[0m
+[0m2: [0;31m0 [0;32m1 [0;32m3 [0;31m4 [0;31m5 [0;31m6 [0;31m7 [0;31m8 [0;32m9 [0;32m10[0m
+[0m3: [0;31m0 [0;31m1 [0;32m2 [0;32m4 [0;31m5 [0;31m7 [0;31m8 [0;31m9 [0;31m10[0m
+[0m4: [0;31m0 [0;31m1 [0;31m2 [0;32m3 [0;31m5 [0;31m7 [0;31m8 [0;31m9 [0;31m10[0m
+[0m5: [0;32m0 [0;31m1 [0;31m2 [0;31m3 [0;31m4 [0;32m6 [0;32m7 [0;31m8 [0;31m9 [0;31m10[0m
+[0m6: [0;31m0 [0;31m1 [0;31m2 [0;32m5 [0;31m7 [0;31m8 [0;31m9 [0;31m10[0m
+[0m7: [0;32m0 [0;32m1 [0;31m2 [0;31m3 [0;31m4 [0;32m5 [0;31m6 [0;32m8 [0;31m9 [0;31m10[0m
+[0m8: [0;31m0 [0;31m1 [0;31m2 [0;31m3 [0;31m4 [0;31m5 [0;31m6 [0;32m7 [0;31m9 [0;31m10[0m
+[0m9: [0;31m0 [0;32m1 [0;32m2 [0;31m3 [0;31m4 [0;31m5 [0;31m6 [0;31m7 [0;31m8 [0;31m10[0m
+[0m10: [0;32m0 [0;32m1 [0;32m2 [0;31m3 [0;31m4 [0;31m5 [0;31m6 [0;31m7 [0;31m8 [0;31m9[0m
+Total pairs: 30
+Stereo pair: #30 0 <-> 1
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 18606
+Compute Time: 1.1702 sec
+
+Total Points: 188167
+Valid Points: 0
+
+Stereo pair: #29 0 <-> 5
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 19959
+Compute Time: 1.0589 sec
+
+Total Points: 242574
+Valid Points: 0
+
+Stereo pair: #28 0 <-> 7
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 17289
+Compute Time: 1.1957 sec
+
+Total Points: 267860
+Valid Points: 56065
+
+Stereo pair: #27 0 <-> 10
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 16007
+Compute Time: 1.1193 sec
+
+Total Points: 276747
+Valid Points: 74625
+
+Stereo pair: #26 1 <-> 0
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 21880
+Compute Time: 1.1879 sec
+
+Total Points: 381953
+Valid Points: 94305
+
+Stereo pair: #25 1 <-> 2
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 22954
+Compute Time: 1.3069 sec
+
+Total Points: 416457
+Valid Points: 99593
+
+Stereo pair: #24 1 <-> 7
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 20411
+Compute Time: 1.2668 sec
+
+Total Points: 429484
+Valid Points: 123056
+
+Stereo pair: #23 1 <-> 9
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 19219
+Compute Time: 1.2484 sec
+
+Total Points: 434041
+Valid Points: 138148
+
+Stereo pair: #22 1 <-> 10
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 18157
+Compute Time: 1.2017 sec
+
+Total Points: 435909
+Valid Points: 145782
+
+Stereo pair: #21 2 <-> 1
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 19932
+Compute Time: 1.1001 sec
+
+Total Points: 544059
+Valid Points: 150377
+
+Stereo pair: #20 2 <-> 3
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 18344
+Compute Time: 1.0834 sec
+
+Total Points: 590027
+Valid Points: 151878
+
+Stereo pair: #19 2 <-> 9
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 15513
+Compute Time: 1.1429 sec
+
+Total Points: 617548
+Valid Points: 162921
+
+Stereo pair: #18 2 <-> 10
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 17868
+Compute Time: 1.2015 sec
+
+Total Points: 631050
+Valid Points: 168799
+
+Stereo pair: #17 3 <-> 2
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 22306
+Compute Time: 1.1292 sec
+
+Total Points: 761507
+Valid Points: 179470
+
+Stereo pair: #16 3 <-> 4
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 18209
+Compute Time: 0.8323 sec
+
+Total Points: 798273
+Valid Points: 181883
+
+Stereo pair: #15 4 <-> 3
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 19948
+Compute Time: 0.9060 sec
+
+Total Points: 926062
+Valid Points: 186984
+
+Stereo pair: #14 5 <-> 0
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 20434
+Compute Time: 1.1793 sec
+
+Total Points: 1057622
+Valid Points: 194255
+
+Stereo pair: #13 5 <-> 6
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 21575
+Compute Time: 1.1438 sec
+
+Total Points: 1094092
+Valid Points: 196993
+
+Stereo pair: #12 5 <-> 7
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 18894
+Compute Time: 1.2298 sec
+
+Total Points: 1108796
+Valid Points: 211415
+
+Stereo pair: #11 6 <-> 5
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 18632
+Compute Time: 1.0876 sec
+
+Total Points: 1231796
+Valid Points: 219546
+
+Stereo pair: #10 7 <-> 0
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 18140
+Compute Time: 1.2985 sec
+
+Total Points: 1320809
+Valid Points: 231359
+
+Stereo pair: #9 7 <-> 1
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 18200
+Compute Time: 1.3136 sec
+
+Total Points: 1350498
+Valid Points: 236756
+
+Stereo pair: #8 7 <-> 5
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 18922
+Compute Time: 1.2674 sec
+
+Total Points: 1363198
+Valid Points: 244482
+
+Stereo pair: #7 7 <-> 8
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 20050
+Compute Time: 1.2134 sec
+
+Total Points: 1366795
+Valid Points: 255454
+
+Stereo pair: #6 8 <-> 7
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 19982
+Compute Time: 1.2779 sec
+
+Total Points: 1494423
+Valid Points: 261239
+
+Stereo pair: #5 9 <-> 1
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 20921
+Compute Time: 1.2127 sec
+
+Total Points: 1609045
+Valid Points: 263645
+
+Stereo pair: #4 9 <-> 2
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 19092
+Compute Time: 1.1786 sec
+
+Total Points: 1652503
+Valid Points: 265603
+
+Stereo pair: #3 10 <-> 0
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 18242
+Compute Time: 1.1078 sec
+
+Total Points: 1750384
+Valid Points: 267424
+
+Stereo pair: #2 10 <-> 1
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 20192
+Compute Time: 1.2057 sec
+
+Total Points: 1793265
+Valid Points: 268261
+
+Stereo pair: #1 10 <-> 2
+0...10...20...30...40...50...60...70...80...90...100 - done.
+Resample Misses: 19194
+Compute Time: 1.1835 sec
+
+Total Points: 1818845
+Valid Points: 275124
+
+
+Scene Time: 56.1054 sec

@@ -112,6 +112,8 @@ int main( int argc, char **argv )
     // load vis data
     LoadVisData( PMVSDir + "/vis.dat", cameras, visdata );
 
+    int64 sceneStartTime = getTickCount();
+
     // sequential processing
     int visnum = visdata.size();
     for ( size_t idx1 = 0; idx1 < cameras.size(); idx1++ )
@@ -196,6 +198,12 @@ int main( int argc, char **argv )
         cameras[idx1].descriptors.release();
         cameras[idx1].m_daisy_init = false;
     }
+
+    cout << endl;
+
+    int64 sceneEndTime = getTickCount();
+    printf("Scene Time: %.4f sec\n", ( sceneEndTime - sceneStartTime ) / frequency );
+
 
     return 0;
 }
