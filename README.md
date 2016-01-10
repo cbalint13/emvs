@@ -9,6 +9,9 @@
 
 **WORK IS IN PROGRESS**
 
+10-Jan-2016
+ * Requires OpenCV with PR: https://github.com/Itseez/opencv_contrib/pull/503
+
 --------------------------------------------------------------------------------------
 
 [1] E. Tola and C. Strecha and P. Fua

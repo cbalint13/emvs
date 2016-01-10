@@ -69,6 +69,8 @@ void OutputPLY(const string &filename, const vector<PointRGB_hit_type>& point_cl
 
     printf("Valid Points: %i\n", count);
 
+    cout << endl;
+
     output << "ply" << endl;
     output << "format ascii 1.0" << endl;
     output << "element face 0" << endl;

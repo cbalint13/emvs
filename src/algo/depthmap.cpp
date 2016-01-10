@@ -55,7 +55,7 @@
 using namespace std;
 using namespace emvs;
 
-static inline float FastSumSquaredDifference( const float* vec1, const float* vec2, int N )
+static inline float FastSumSquaredDifference( const float* vec1, const float* vec2, const int N )
 {
     // handle multiple word
     CV_Assert(N % 4 == 0);
@@ -89,17 +89,27 @@ namespace emvs {
 
 void DoStereoPair( Camera &camera1, Camera &camera2, vector<PointRGB_hit_type>& point_cloud_hit )
 {
+    // routine switches
+    const bool nonmax = true;
+    const bool subsample = true;
 
-    const int border = 20;
+    // image borders
+    const int border = 8;
 
+    // scan depth range
     const float min_depth = 0.5;
     const float max_depth = 25;
 
+    // quality of epipolar minima
     const float match_ratio_threshold = 0.8;
 
+    // maxima ration when supress
     const int non_maxima_ratio = 10.0f;
+    // valid 3d point valid distance
     const float max_dist_sq = 0.025*0.025;
 
+    // statistics
+    int resample_miss = 0;
 
     // -Z reversal identity matrix
     Matx33f Z = Matx33f::eye(); Z(2,2) = -1;
@@ -121,7 +131,9 @@ void DoStereoPair( Camera &camera1, Camera &camera2, vector<PointRGB_hit_type>& 
         camera2.m_index_to_point_cloud.resize( camera2.m_image.cols * camera2.m_image.rows, -1 );
     }
 
-
+    /*
+     *  For each point coord y of image #1
+     */
     int nLastTick = -1;
     #pragma omp parallel for schedule(dynamic,1)
     for ( int y = border; y < camera1.m_image.rows - border; y++ )
@@ -136,36 +148,42 @@ void DoStereoPair( Camera &camera1, Camera &camera2, vector<PointRGB_hit_type>& 
         nLastTick = TermProgress( (double)(y+border) / (double)(camera1.m_image.rows), nLastTick );
       }
 
+      /*
+       *  For each point coord x of image #1
+       */
       for ( int x = border; x < camera1.m_image.cols - border; x++ )
       {
         vector<Point2f> epi;
         vector<Point3f> Xs;
         vector<float> depths;
         vector<float> dists, supressed_dists;
-        Point2i ref;
 
-        ref.x = x;
-        ref.y = y;
+        // reference point in img1
+        const Point2i img1pt( x, y );
+
+        // sampling grain size
+        const float samplesz = 8;
 
         /*
-         * (1) First SubSampling in integer mode given ref (img1 x,y).
+         * (1) First SubSampling in integer mode given img1pt.
          *  min_rdepth = 0.5, max_rdepth = 25 (sufficient for any SfM ?!)
          *  step in img2 of 8 pixels for epiline scan.
-         *  8 pixel should beless then  half of DAISY size so response gaps are fine.
+         *  8 pixel should beless then half of DAISY size so response gaps are fine.
          */
-        UniformSampling( camera1, camera2, ref, min_depth, max_depth, 8, epi, Xs, depths );
+        UniformSampling( camera1, camera2, img1pt, min_depth, max_depth, samplesz, epi, Xs, depths );
 
         // numerical bounds: protect epipolar samples
         if ( epi.empty() ) continue;
         // numerical bounds: too few samples ?
         if ( epi.size() < 18 ) continue;
 
+        // precomputed descriptor at integer location
         desc1 = camera1.descriptors.ptr<float>( y*camera2.m_image.cols + x );
 
         int best_i = -1;
         float best = FLT_MAX;
         float second_best = FLT_MAX;
-        dists.resize(epi.size(), FLT_MAX);
+        dists.resize( epi.size(), FLT_MAX );
 
 #ifdef DEBUG
         vector<float> debug;
@@ -173,28 +191,27 @@ void DoStereoPair( Camera &camera1, Camera &camera2, vector<PointRGB_hit_type>& 
         int count = 0;
         for ( size_t i = 0; i < epi.size(); i++ )
         {
+          // pixel center (integer)
+          int xv = floor( 0.5f + epi[i].x );
+          int yv = floor( 0.5f + epi[i].y );
 
-          int xv = epi[i].x;
-          int yv = epi[i].y;
-
-          if ( (xv < border) ||
-               (xv >= camera2.m_image.cols - border) ||
-               (yv < border) ||
-               (yv >= camera2.m_image.rows - border)
+          if ( ( xv < border) ||
+               ( xv >= camera2.m_image.cols - border ) ||
+               ( yv < border) ||
+               ( yv >= camera2.m_image.rows - border )
              ) continue;
 
-
+          // precomputed descriptor at integer location
           desc2 = camera2.descriptors.ptr<float>( yv*camera2.m_image.cols + xv) ;
           float dist = FastSumSquaredDifference( desc1, desc2, camera1.descriptors.cols );
-
 #ifdef DEBUG
           debug.push_back( dist );
 #endif
-
           dists[i] = dist;
           if( dist < best )
           {
             best_i = i;
+            second_best = best;
             best = dist;
           }
           count++;
@@ -203,30 +220,40 @@ void DoStereoPair( Camera &camera1, Camera &camera2, vector<PointRGB_hit_type>& 
         // too few distances
         if ( count < 8 ) continue;
 
-        // Non-max supression on dists
-        int non_maxima_win = dists.size() / non_maxima_ratio;
-        for ( int w = -non_maxima_win/2; w <= non_maxima_win/2; w++ )
+        // nonmax
+        if ( nonmax )
         {
-          if ( w == 0 ) continue;
+          // non-max supression on dists
+          int non_maxima_win = dists.size() / non_maxima_ratio;
+          for ( int w = -non_maxima_win/2; w <= non_maxima_win/2; w++ )
+          {
+            if ( w == 0 ) continue;
 
-          int ww = best_i + w;
-          if ( ( ww < 0 ) ||
-               ( ww >= (int)dists.size() )
-             ) continue;
+            int ww = best_i + w;
+            if ( ( ww < 0 ) ||
+                 ( ww >= (int)dists.size() )
+               ) continue;
 
-          dists[ww] = FLT_MAX;
+            dists[ww] = FLT_MAX;
+          }
+          // re-search
+          best = FLT_MAX;
+          second_best = FLT_MAX;
+          for( size_t i=0; i < dists.size(); i++ )
+          {
+            if( dists[i] < best )
+            {
+              best_i = i;
+              second_best = best;
+              best = dists[i];
+            }
+          }
         }
 
-        // Find the second best
-        second_best = FLT_MAX;
-        for( size_t i=0; i < dists.size(); i++ )
-        {
-          if ( (int)i == best_i ) continue;
-          if ( dists[i] < second_best )
-            second_best = dists[i];
-        }
-
+        // reject uncertain minima
         float ratio = best / second_best;
+        if ( ratio >= match_ratio_threshold )
+          continue;
 
 #ifdef DEBUG
           printf("epi.size():%lu debug.size():%lu x:%i y:%i best:[%f] best_i:%i, ratio:%.2f < (%.2f)\n", epi.size(), debug.size(), x, y, best, best_i, best / second_best, match_ratio_threshold);
@@ -240,25 +267,30 @@ void DoStereoPair( Camera &camera1, Camera &camera2, vector<PointRGB_hit_type>& 
           waitKey(0);
 #endif
 
-
         if ( ratio < match_ratio_threshold )
         {
-          // setup
+
           bool better = false;
 
-          // SUBSAMPLE
-          // near minima
-          if ( true )
+          /*
+           * SUBSAMPLE
+           * near minima
+           */
+          if ( subsample )
           {
 //            printf("DBG d1[%f]->d2[%f] size:%lu [%f]->[%f]<-[%.40f] {%f} x:%i y%i\n",
 //                   min_depth, max_depth, epi.size(), depths[best_i-1], depths[best_i], depths[best_i+1], best, (int)epi[best_i].x, (int)epi[best_i].y);
 
             epi.clear();
+            // left/right points around minima
             float min_rdepth = depths[best_i-1];
             float max_rdepth = depths[best_i+1];
 
+            // sub-sample grain size
+            const float subsamplesz = 0.5f;
 
-            float delta_depth = 0.01f;
+            // left/right shift const
+            const float delta_depth = 0.01f;
 
             // numerical bounds: if goo too deep.
             if (max_rdepth == 0) max_rdepth = depths[best_i] + delta_depth;
@@ -281,7 +313,7 @@ void DoStereoPair( Camera &camera1, Camera &camera2, vector<PointRGB_hit_type>& 
              * max_rdepth = near found minima plus one.
              * TODO: better/relaxed expression of this.
              */
-            UniformSampling( camera1, camera2, ref, min_rdepth, max_rdepth, 0.5f, epi, Xs, depths );
+            UniformSampling( camera1, camera2, img1pt, min_rdepth, max_rdepth, subsamplesz, epi, Xs, depths );
 
             if ( epi.size() > 50000 ) continue;
             if ( epi.empty() ) continue;
@@ -299,10 +331,10 @@ void DoStereoPair( Camera &camera1, Camera &camera2, vector<PointRGB_hit_type>& 
                    (yv >= camera2.m_image.rows - border)
                  ) continue;
 
+              // compute descriptor at subpixel
               float desc3[ camera2.descriptors.cols ];
               camera2.m_daisy->GetDescriptor( yv, xv, 0, desc3 );
 
-              // L1 or L2?
               float dist = FastSumSquaredDifference( desc1, desc3, camera1.descriptors.cols );
 
               dists[i] = dist;
@@ -318,16 +350,22 @@ void DoStereoPair( Camera &camera1, Camera &camera2, vector<PointRGB_hit_type>& 
               //printf("    d1[%f]->d2[%f] size:%lu [%f]->[%f]<-[%f] {%f} x:%f y:%f\n",
               // min_rdepth, max_rdepth, epi.size(), depths[best_i-1], depths[best_i], depths[best_i+1], best, epi[best_i].x, epi[best_i].y);
 
-          } // END second refine
+            // Found worse minima
+            // when subsampling ?
+            // Then skip this point.
+            if ( ! better )
+            {
+              #pragma omp critical
+              {
+                resample_miss++;
+              }
+              continue;
+            }
 
-          // Found worse minima
-          // when subsampling ?
-          // Then skip this point.
-          if ( ! better ) continue;
+          } // end second refine
 
 
-          int x1 = x;
-          int y1 = y;
+          int x1 = x; int y1 = y;
           int idx1 = y1*(camera1.m_image.cols) + x1;
 
           int x2 = epi[best_i].x;
@@ -399,6 +437,7 @@ void DoStereoPair( Camera &camera1, Camera &camera2, vector<PointRGB_hit_type>& 
       }
     }
     nLastTick = TermProgress( 1.0f, nLastTick );
+    printf( "Resample Misses: %i\n", resample_miss );
 }
 
 } // end emvs namespace

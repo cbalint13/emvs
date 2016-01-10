@@ -212,8 +212,9 @@ void LoadVisData( const string &bundle_file, const vector<Camera> &cameras, mult
 void OutputPLY( const string &filename, const vector<PointRGB_hit_type> &point_cloud_hit, uint min_hit );
 
 // Stereo Routines
-void UniformSampling( const Camera& camera1, const Camera& camera2, const Point2i& Img2DPoint,
-                      float Lmin, float Lmax, float r, vector<Point2f>& epi, vector<Point3f>& Xs,
+void UniformSampling( const Camera& camera1, const Camera& camera2, const Point2i& RefPoint,
+                      float Lmin, float Lmax, const float r,
+                      vector<Point2f>& epi, vector<Point3f>& Xs,
                       vector<float>& depths );
 
 void DoStereoPair( Camera& camera1, Camera& camera2, vector<PointRGB_hit_type>& point_cloud_hit );

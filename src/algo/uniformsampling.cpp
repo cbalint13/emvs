@@ -54,9 +54,9 @@ using namespace emvs;
 
 namespace emvs {
 
-void UniformSampling( const Camera& camera1, const Camera& camera2, const Point2i& Img2DPoint,
-                      float Lmin, float Lmax, float r, vector<Point2f>& epi,
-                      vector<Point3f>& Xs, vector<float>& depths )
+void UniformSampling( const Camera& camera1, const Camera& camera2, const Point2i& RefPoint,
+                      float Lmin, float Lmax, const float r,
+                      vector<Point2f>& epi, vector<Point3f>& Xs, vector<float>& depths )
 {
 
     // Magic matrix that makes
@@ -64,7 +64,7 @@ void UniformSampling( const Camera& camera1, const Camera& camera2, const Point2
     Matx33f Z = Matx33f::eye(); Z(2,2) = -1;
 
     Matx31f x; x(2) = 1.0f;
-    x(0) = Img2DPoint.x; x(1) = Img2DPoint.y;
+    x(0) = RefPoint.x; x(1) = RefPoint.y;
 
     Matx33f K1 = camera2.GetK();
     Matx33f inv_K0 = camera1.GetInvK();

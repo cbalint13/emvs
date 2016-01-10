@@ -93,6 +93,7 @@ int main( int argc, char **argv )
     cout << "PMVSDir: " << PMVSDir
          << "OutPLYFilename: " << OutPLYFilename << endl;
 
+    double frequency = getTickFrequency();
 
     // scene cameras
     vector<Camera> cameras;
@@ -172,7 +173,12 @@ int main( int argc, char **argv )
             }
 
             // 3D point cloud from stereo pairs
+            int64 pairStartTime = getTickCount();
             DoStereoPair( cameras[idx1], cameras[idx2], point_cloud_hit );
+            int64 pairEndTime = getTickCount();
+            printf("Compute Time: %.4f sec\n", ( pairEndTime - pairStartTime ) / frequency );
+
+            cout << endl;
 
             // idx2 done, clean unused memory
             cameras[idx2].m_daisy.release();
